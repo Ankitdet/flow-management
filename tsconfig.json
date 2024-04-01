@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "types": [],
+    "declaration": false,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2022",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "lib": [
+      "es2022"
+    ],
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "strictPropertyInitialization": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "noLib": false,
+    "moduleResolution": "node",
+    "noImplicitReturns": false,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ]
+  },
+  "include": [
+    "./src/**/*",
+    "./e2e-tests/**/*",
+    "./**/*.json",
+    "./src/.jest/**/*",
+    "resources/js/generateGraphqlnputs.js",
+    "resources/json/Tkn3blks.json"
+  ],
+  "compileOnSave": false,
+  "exclude": []
+}
