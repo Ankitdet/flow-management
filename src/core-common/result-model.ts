@@ -1,9 +1,9 @@
-import { GenericError } from "./generic-error"
+import { CommonError } from "./common-error"
 
 export class Result<T> {
     success: boolean = false
     data: T = null
-    error: GenericError = null
+    error: CommonError = null
 
     public static success<T>(value: T): Result<T> {
         const result = new Result<T>()
@@ -12,7 +12,7 @@ export class Result<T> {
         return result
     }
 
-    public static failed<T>(error: GenericError): Result<T> {
+    public static failed<T>(error: CommonError): Result<T> {
         const result = new Result<T>()
         result.success = false
         result.error = error

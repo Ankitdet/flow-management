@@ -1,7 +1,12 @@
 import { CrudModule } from "./common-infra/base.module";
-import { UserModule } from "./routes/user/user.module";
+import { ProductModule } from "./routes/product/product.module";
+
+
+export const GlobleModules = [
+    CrudModule,
+]
 
 export const AllModules = [
-    CrudModule,
-    UserModule,
+    ...GlobleModules,
+    ProductModule,
 ]

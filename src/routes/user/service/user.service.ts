@@ -12,7 +12,7 @@ export class UserService {
         return this.userRepository.findAll();
     }
 
-    public async save(data: any): Promise<Result<User[]>> {
-        return await this.userRepository.save(data);
+    public async save(data: any): Promise<Result<User | User[]>> {
+        return await this.userRepository.saveAll(data);
     }
 }

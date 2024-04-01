@@ -25,6 +25,6 @@ import { AllModules } from './export-module';
   ],
   controllers: [],
   providers: [],
-  exports: [/* core module*/]
+  exports: []
 })
 export class MainModule { }

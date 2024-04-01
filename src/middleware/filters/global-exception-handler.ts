@@ -2,7 +2,7 @@ import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus } from '@nest
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host'
 import { Response } from 'express'
 import { handleResponse } from '../interceptor/response-handler'
-import { HttpResponseFormatter } from '../utils/http-response-formatter'
+import { HttpResponseFormatter } from '../../core-common/utils/http-response-formatter'
 import { Result } from '../../core-common/result-model'
 import { CustomValidationError } from '../../core-common/errors/custom-validation-error'
 

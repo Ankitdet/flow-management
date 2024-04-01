@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import { ServerResponse } from 'http'
 import { Observable, map } from 'rxjs'
-import { HttpResponseFormatter } from '../utils/http-response-formatter'
+import { HttpResponseFormatter } from '../../core-common/utils/http-response-formatter'
 import { v4 as uuidv4 } from 'uuid'
 import { GenericSuccessResponse } from '../../core-common/generic-response-model/generic-success-response'
 import { GenericErrorResponse } from '../../core-common/generic-response-model/generic-error-response'

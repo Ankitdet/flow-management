@@ -3,7 +3,7 @@ import { BaseEntity } from '../entities/base.entity';
 import { IRepository } from '../interface/base-crud.interface';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Result } from '../../../core-common/result-model';
-import { GenericError } from '../../../core-common/generic-error';
+import { CommonError } from '../../../core-common/common-error';
 
 export abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
     constructor(public readonly repository: Repository<T>) { }
@@ -13,7 +13,7 @@ export abstract class BaseRepository<T extends BaseEntity> implements IRepositor
             const findAll = await this.repository.find(options);
             return Result.success(findAll)
         } catch (error) {
-            return Result.throwIfFailed(Result.failed(new GenericError('Failed to FindAll', { options })))
+            return Result.throwIfFailed(Result.failed(new CommonError('Failed to FindAll', { options })))
         }
     }
 
@@ -22,19 +22,22 @@ export abstract class BaseRepository<T extends BaseEntity> implements IRepositor
             const findByIdResult = await this.repository.findOne(options);
             return Result.success(findByIdResult)
         } catch (error) {
-            return Result.throwIfFailed(Result.failed(new GenericError('Failed to FindById', { options })))
+            return Result.throwIfFailed(Result.failed(new CommonError('Failed to FindById', { options })))
         }
     }
-    public async save(data: DeepPartial<T>[]): Promise<Result<T[]>> {
+    public async saveAll(data: DeepPartial<T>[]): Promise<Result<T | T[]>> {
         try {
             const entity = this.repository.create(data);
             const saveResult = await this.repository.save(entity);
             if (saveResult) {
+                if (saveResult.length == 1) {
+                    return Result.success(saveResult[0])
+                }
                 return Result.success(saveResult)
             }
             throw new Error(`Failed to create data.`)
         } catch (error) {
-            return Result.throwIfFailed(Result.failed(new GenericError('Failed to create', data)))
+            return Result.throwIfFailed(Result.failed(new CommonError('Failed to create', data)))
         }
     }
 
@@ -46,7 +49,7 @@ export abstract class BaseRepository<T extends BaseEntity> implements IRepositor
             }
             throw new Error(`Failed to update data.`)
         } catch (error) {
-            return Result.throwIfFailed(Result.failed(new GenericError('Failed to update', { criteria, partialEntity })))
+            return Result.throwIfFailed(Result.failed(new CommonError('Failed to update', { criteria, partialEntity })))
         }
     }
 
@@ -58,7 +61,7 @@ export abstract class BaseRepository<T extends BaseEntity> implements IRepositor
             }
             throw new Error(`Failed to delete data.`)
         } catch (error) {
-            return Result.throwIfFailed(Result.failed(new GenericError('Failed to delete', { criteria })))
+            return Result.throwIfFailed(Result.failed(new CommonError('Failed to delete', { criteria })))
         }
     }
 }

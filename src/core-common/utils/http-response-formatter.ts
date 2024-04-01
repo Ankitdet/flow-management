@@ -1,9 +1,9 @@
 import { HttpStatus } from '@nestjs/common'
 import { NotFoundError } from 'rxjs'
-import { GenericErrorResponse } from '../../core-common/generic-response-model/generic-error-response'
-import { GenericSuccessResponse } from '../../core-common/generic-response-model/generic-success-response'
-import { Result } from '../../core-common/result-model'
-import { GenericError } from '../../core-common/generic-error'
+import { GenericErrorResponse } from '../generic-response-model/generic-error-response'
+import { GenericSuccessResponse } from '../generic-response-model/generic-success-response'
+import { Result } from '../result-model'
+import { CommonError } from '../common-error'
 
 export class HttpResponseFormatter {
     public getStandardApiResponse(
@@ -40,7 +40,7 @@ export class HttpResponseFormatter {
         return errorResponse
     }
 
-    private getStatusCode(error: GenericError): HttpStatus {
+    private getStatusCode(error: CommonError): HttpStatus {
         if (error instanceof NotFoundError) {
             return HttpStatus.NOT_FOUND
         }
