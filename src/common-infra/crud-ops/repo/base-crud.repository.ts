@@ -2,8 +2,8 @@ import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsWhere, ObjectI
 import { BaseEntity } from '../entities/base.entity';
 import { IRepository } from '../interface/base-crud.interface';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { Result } from '../../../core-common/result-model';
 import { CommonError } from '../../../core-common/common-error';
+import { Result } from '../../../core-common/result-model';
 
 export abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
     constructor(public readonly repository: Repository<T>) { }
