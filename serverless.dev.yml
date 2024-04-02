@@ -8,12 +8,13 @@ provider:
 
 plugins:
   - serverless-webpack
+  - serverless-offline
 
 functions:
   app:
     handler: src/lambda.handler
     runtime: nodejs16.x
-    timeout: 5
+    timeout: 10
     events:
       - http:
           path: '/{proxy+}'
