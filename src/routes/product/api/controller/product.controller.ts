@@ -28,9 +28,11 @@ export class ProductInfoController {
         @Query('limit') limit: number,
         @Query('sortColumn') column: string,
         @Query('sortDirection') direction: 'ASC' | 'DESC',
-        @Query('finishing') finishing: string
+        @Query('finishing') finishing: string,
+        @Query('productionNo') productionNo: string,
+
     ) {
-        const listObj = new ListQuery<ListProdcutRequest>({ finishing }, offset, limit, column, direction)
+        const listObj = new ListQuery<ListProdcutRequest>({ finishing, productionNo }, offset, limit, column, direction)
         return await this.productService.listProduct(listObj)
     }
 

@@ -1,6 +1,7 @@
 import { GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { CREDENTIALS, REGION } from './s3-constant';
 
 @Injectable()
 export class AwsS3Service {
@@ -8,11 +9,8 @@ export class AwsS3Service {
 
     constructor() {
         this.s3Client = new S3Client({
-            credentials: {
-                accessKeyId: 'AKIA2LT6VZTUQBOJILEO',
-                secretAccessKey: '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'
-            },
-            region: "us-east-1"
+            credentials: CREDENTIALS,
+            region: REGION
         });
     }
 

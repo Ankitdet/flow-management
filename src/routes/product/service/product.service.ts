@@ -6,7 +6,8 @@ import { ProductRepository } from "../infrastructure/product.repositorty";
 import { ListQuery } from "../../../common-infra/crud-ops/list-query";
 import { ListProdcutRequest } from "../api/request-model/list-product.request";
 import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provider";
-
+import { Like } from 'typeorm';
+import { IMAGE_FOLDER } from "../../../common-infra/s3-services/s3-constant";
 @Injectable()
 export class ProductService {
     constructor(
@@ -41,25 +42,31 @@ export class ProductService {
     }
 
     public async listProduct(listQuery: ListQuery<ListProdcutRequest>) {
+        const whereCondition = {}
+        if (listQuery.query.finishing) {
+            whereCondition[`finishing`] = listQuery.query.finishing
+        }
+        if (listQuery.query.productionNo) {
+            whereCondition['productionNo'] = Like(`%${listQuery.query.productionNo}%`);
+        }
         const result = await this.prodRepo.findAll({
             order: { [listQuery.sortColumn]: listQuery.sortDirection },
             skip: listQuery.offset,
             take: listQuery.limit,
-            where: { finishing: listQuery.query.finishing }
+            where: { ...whereCondition }
         })
         Result.throwIfFailed(result)
-        return Result.success(result)
+        return result
     }
 
     public async getUploadPreSignUrl(keys: string[]) {
         const newkeys = keys.map((m) => 'images/' + m)
-        return await this.s3Service.batchPutPresignedUrls('general-purpose-tiles', newkeys)
+        return await this.s3Service.batchPutPresignedUrls(IMAGE_FOLDER, newkeys)
     }
 
     public async downloadImagePreSignUrls(folderName: string) {
-        const allUrls = await this.s3Service.getAllPresignedUrls(folderName, 'general-purpose-tiles')
+        const allUrls = await this.s3Service.getAllPresignedUrls(folderName, IMAGE_FOLDER)
         return Result.success(allUrls)
     }
-
 
 }
