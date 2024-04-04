@@ -9,8 +9,8 @@ export class AwsS3Service {
     constructor() {
         this.s3Client = new S3Client({
             credentials: {
-                accessKeyId: 'AKIA2LT6VZTUWXWB3AFI',
-                secretAccessKey: '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'
+                accessKeyId: 'AKIA2LT6VZTUQBOJILEO',
+                secretAccessKey: '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'
             },
             region: "us-east-1"
         });
