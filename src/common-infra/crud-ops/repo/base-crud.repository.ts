@@ -8,10 +8,10 @@ import { Result } from '../../../core-common/result-model';
 export abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
     constructor(public readonly repository: Repository<T>) { }
 
-    public async findAll(options?: FindManyOptions<T>): Promise<Result<T[]>> {
+    public async findAll(options?: FindManyOptions<T>): Promise<Result<{ result: T[], count: number }>> {
         try {
-            const findAll = await this.repository.find(options);
-            return Result.success(findAll)
+            const [result, count] = await this.repository.findAndCount(options);
+            return Result.success({ result, count })
         } catch (error) {
             return Result.throwIfFailed(Result.failed(new CommonError('Failed to FindAll', { options })))
         }
@@ -19,6 +19,7 @@ export abstract class BaseRepository<T extends BaseEntity> implements IRepositor
 
     public async findById(options: FindOneOptions<T>): Promise<Result<T>> {
         try {
+            await this.repository.clear()
             const findByIdResult = await this.repository.findOne(options);
             return Result.success(findByIdResult)
         } catch (error) {

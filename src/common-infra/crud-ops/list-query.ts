@@ -4,7 +4,7 @@ export class ListQuery<T> {
         public offset: number,
         public limit: number,
         public sortColumn: string,
-        public sortDirection: 'Asc' | 'Desc'
+        public sortDirection: "ASC" | "DESC"
     ) {
         if (isNaN(this.limit)) this.limit = 10
         if (isNaN(this.offset)) {
@@ -21,7 +21,7 @@ export class ListQuery<T> {
             this.sortColumn = 'createdAt'
         }
         if (!this.sortDirection) {
-            this.sortDirection = 'Desc'
+            this.sortDirection = 'DESC'
         }
     }
 }

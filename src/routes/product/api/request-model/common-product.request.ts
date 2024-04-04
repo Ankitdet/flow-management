@@ -26,10 +26,11 @@ export class CommonProductRequest {
         this.finishing = data.finishing || '';
         this.surface = data.surface || '';
         this.face = data.face || '';
-
+        this.id = data.id
 
         let result = []
         if (operation === RequestEnum.CREATE) {
+            delete this.id
             if (!this.productionNo) {
                 result.push(`productionNo must be required.`)
             }
@@ -44,12 +45,15 @@ export class CommonProductRequest {
         }
 
         if (operation === RequestEnum.UPDATE) {
-            this.id = data.id
-
+            if (!this.id) {
+                result.push(`Id must be required.`)
+            }
         }
 
         if (operation === RequestEnum.DELETE) {
-
+            if (!this.id) {
+                result.push(`Id must be required.`)
+            }
         }
 
         if (result.length > 0) {
