@@ -4,7 +4,7 @@ import { CreateProductRequest } from "../request-model/create-product.request";
 import { UpdateProductRequest } from "../request-model/update-product.request";
 import { DeleteProductRequest } from "../request-model/delete-product.request";
 import { ListQuery } from "../../../../common-infra/crud-ops/list-query";
-import { ListProdcutRequest } from "../request-model/list-product.request";
+import { ListProductRequest } from "../request-model/list-product.request";
 
 @Injectable()
 @Controller('product')
@@ -30,9 +30,8 @@ export class ProductInfoController {
         @Query('sortDirection') direction: 'ASC' | 'DESC',
         @Query('finishing') finishing: string,
         @Query('productionNo') productionNo: string,
-
     ) {
-        const listObj = new ListQuery<ListProdcutRequest>({ finishing, productionNo }, offset, limit, column, direction)
+        const listObj = new ListQuery<ListProductRequest>({ finishing, productionNo }, offset, limit, column, direction)
         return await this.productService.listProduct(listObj)
     }
 

@@ -30,6 +30,7 @@ export class CommonProductRequest {
 
         let result = []
         if (operation === RequestEnum.CREATE) {
+            // Delete ID as not needed on creation part.
             delete this.id
             if (!this.productionNo) {
                 result.push(`productionNo must be required.`)

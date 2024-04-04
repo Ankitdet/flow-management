@@ -4,7 +4,7 @@ import { Result } from "../../../core-common/result-model";
 import { Product } from "../entity/product.entity";
 import { ProductRepository } from "../infrastructure/product.repositorty";
 import { ListQuery } from "../../../common-infra/crud-ops/list-query";
-import { ListProdcutRequest } from "../api/request-model/list-product.request";
+import { ListProductRequest } from "../api/request-model/list-product.request";
 import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provider";
 import { Like } from 'typeorm';
 import { IMAGE_FOLDER } from "../../../common-infra/s3-services/s3-constant";
@@ -41,7 +41,7 @@ export class ProductService {
         return Result.success('Delete Success !!!')
     }
 
-    public async listProduct(listQuery: ListQuery<ListProdcutRequest>) {
+    public async listProduct(listQuery: ListQuery<ListProductRequest>) {
         const whereCondition = {}
         if (listQuery.query.finishing) {
             whereCondition[`finishing`] = listQuery.query.finishing

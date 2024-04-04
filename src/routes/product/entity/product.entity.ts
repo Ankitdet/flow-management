@@ -13,4 +13,5 @@ export class Product extends BaseEntity {
     surface: string;
     @Column()
     face: string;
+
 }

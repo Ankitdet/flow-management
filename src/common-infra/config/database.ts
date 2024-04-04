@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConnectionManager, getConnectionManager } from 'typeorm';
-import { Product } from '../../routes/product/entity/product.entity';
 
 export const DBConfig = {
     "POSTGRES_USER": "admin",
@@ -27,7 +26,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
                 password: DBConfig.POSTGRES_PASSWORD,
                 database: 'velloza',
                 port: DBConfig.PORT,
-                entities: [Product],
+                logging: true,
+                entities: ['src/routes/product/entity/product.entity.ts', 'src/routes/performa-invoice/entity/performa-invoice.entity.ts'],
                 ssl: {
                     rejectUnauthorized: false,
                 },
