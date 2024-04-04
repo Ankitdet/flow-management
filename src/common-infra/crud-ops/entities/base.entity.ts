@@ -1,6 +1,7 @@
 import {
-    PrimaryGeneratedColumn,
+    Column,
     CreateDateColumn,
+    PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
@@ -13,6 +14,12 @@ export abstract class BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: string;
+
+    @Column({ type: 'boolean', default: true })
+    isActive: boolean;
+
+    @Column({ type: 'boolean', default: false })
+    isArchived: boolean;
 
 }
 

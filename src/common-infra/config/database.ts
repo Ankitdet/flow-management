@@ -24,10 +24,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
                 host: DBConfig.POSTGRES_HOST,
                 username: DBConfig.POSTGRES_USER,
                 password: DBConfig.POSTGRES_PASSWORD,
+                autoLoadEntities: true,
                 database: 'velloza',
                 port: DBConfig.PORT,
                 logging: true,
-                entities: ['src/routes/product/entity/product.entity.ts', 'src/routes/performa-invoice/entity/performa-invoice.entity.ts'],
+                logger: 'file',
+                entities: ['**/*.entity{.ts,.js}'],
                 ssl: {
                     rejectUnauthorized: false,
                 },
