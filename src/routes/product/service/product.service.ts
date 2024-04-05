@@ -8,13 +8,16 @@ import { ListProductRequest } from "../api/request-model/list-product.request";
 import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provider";
 import { Like } from 'typeorm';
 import { IMAGE_FOLDER } from "../../../common-infra/s3-services/s3-constant";
+import { PerformaInvoiceRepository } from "../../performa-invoice/infrastructure/performa-invoice.repositorty";
 @Injectable()
 export class ProductService {
     constructor(
         private readonly prodRepo: ProductRepository,
         @Inject(AwsS3Service.name)
-        private readonly s3Service: AwsS3Service
+        private readonly s3Service: AwsS3Service,
+        private readonly performaInvoice: PerformaInvoiceRepository
     ) {
+        console.log(this.performaInvoice)
     }
     public async createProduct(saveRequest: DeepPartial<Product>): Promise<Result<Product | Product[]>> {
         const resp = await this.prodRepo.saveAll([saveRequest])

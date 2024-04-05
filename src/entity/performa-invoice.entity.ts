@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../common-infra/crud-ops/entities/base.entity';
 import { Product } from '.';
 
-@Entity()
+@Entity('performa_invoice')
 export class PerformaInvoiceEntity extends BaseEntity {
 
     @Column()

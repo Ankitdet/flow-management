@@ -5,9 +5,11 @@ import { Product } from "../../entity/product.entity";
 import { ProductInfoController } from "./api/controller/product.controller";
 import { ProductRepository } from "./infrastructure/product.repository";
 import { ProductService } from "./service/product.service";
+import { PerformaInvoiceRepository } from "../performa-invoice/infrastructure/performa-invoice.repositorty";
+import { PerformaInvoiceEntity } from "../../entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Product])],
+    imports: [TypeOrmModule.forFeature([Product, PerformaInvoiceEntity])],
     controllers: [ProductInfoController],
     providers: [
         {
@@ -19,6 +21,7 @@ import { ProductService } from "./service/product.service";
             useClass: AwsS3Service
         },
         ProductRepository,
+        PerformaInvoiceRepository
     ],
     exports: [
         {

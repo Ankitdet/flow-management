@@ -19,7 +19,6 @@ export class BaseRepository<T extends BaseEntity> implements IRepository<T>{
 
     public async findById(options: FindOneOptions<T>): Promise<Result<T>> {
         try {
-            await this.repository.clear()
             const findByIdResult = await this.repository.findOne(options);
             return Result.success(findByIdResult)
         } catch (error) {
