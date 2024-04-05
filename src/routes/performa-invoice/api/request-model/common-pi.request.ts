@@ -1,10 +1,9 @@
 import { DeepPartial } from '../../../../core-common/deep-partial';
 import { RequestEnum } from '../../../../core-common/enum/request.enum';
-import { Product } from '../../../product/entity/product.entity';
 
 export class CommonPIRequest {
     id: string;
-    product: DeepPartial<Product>;
+    productId: string;
     consignee: string;
     date: DeepPartial<Date>;
     piNo: string;
@@ -24,8 +23,7 @@ export class CommonPIRequest {
     totalSqmtrBox: string;
     fobRate: number;
     totalFobAmount: number;
-    images: string[]
-
+    images: string[];
     constructor(data: DeepPartial<{
         id: string,
         consignee: string,
@@ -48,7 +46,7 @@ export class CommonPIRequest {
         fobRate: number,
         totalFobAmount: number,
         images: string[],
-        product?: Product
+        productId: string
     }>, operation: string) {
         this.id = data.id
         this.consignee = data.consignee;
@@ -71,9 +69,7 @@ export class CommonPIRequest {
         this.fobRate = data.fobRate;
         this.totalFobAmount = data.totalFobAmount;
         this.images = data.images
-        if (data?.product) {
-            this.product = data.product;
-        }
+        this.productId = data.productId;
 
         if (operation === RequestEnum.CREATE) {
             delete this.id

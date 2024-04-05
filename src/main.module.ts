@@ -1,16 +1,16 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from 'nestjs-config';
-import path from 'path';
+import { BaseModule } from './common-infra/base.module';
 import { TypeOrmConfigService } from './common-infra/config/database';
 import { AllModules } from './export-module';
-import { BaseModule } from './common-infra/base.module';
+import { APP_FILTER } from '@nestjs/core';
+import { GlobalExceptionFilter } from './middleware/filters/global-exception-handler';
 
 @Global()
 @Module({
   imports: [
     ...AllModules,
-    ConfigModule.load(path.resolve(__dirname, '**', '*.entity.{ts,js}')),
     TypeOrmModule.forRootAsync(
       {
         inject: [ConfigModule],
@@ -18,7 +18,12 @@ import { BaseModule } from './common-infra/base.module';
       })
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+  ],
   exports: [
     BaseModule
   ]

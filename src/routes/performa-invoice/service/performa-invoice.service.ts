@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PerformaInvoiceEntity } from "../entity/performa-invoice.entity";
+import { PerformaInvoiceEntity } from "../../../entity/performa-invoice.entity";
 import { PerformaInvoiceRepository } from "../infrastructure/performa-invoice.repositorty";
 import { DeepPartial } from "../../../core-common/deep-partial";
 

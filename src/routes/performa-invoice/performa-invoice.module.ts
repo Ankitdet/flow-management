@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PerformaInvoiceEntity } from "./entity/performa-invoice.entity";
+import { PerformaInvoiceEntity } from "../../entity/performa-invoice.entity";
 import { PerformaInvoiceRepository } from "./infrastructure/performa-invoice.repositorty";
 import { PerformaInvoiceService } from "./service/performa-invoice.service";
 import { PerformaInvoiceController } from "./api/controller/peforma-invoice.controller";

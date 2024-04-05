@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { DeepPartial } from "../../../core-common/deep-partial";
 import { Result } from "../../../core-common/result-model";
-import { Product } from "../entity/product.entity";
-import { ProductRepository } from "../infrastructure/product.repositorty";
+import { Product } from "../../../entity/product.entity";
+import { ProductRepository } from "../infrastructure/product.repository";
 import { ListQuery } from "../../../common-infra/crud-ops/list-query";
 import { ListProductRequest } from "../api/request-model/list-product.request";
 import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provider";

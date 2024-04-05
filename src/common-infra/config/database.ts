@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConnectionManager, getConnectionManager } from 'typeorm';
+import { PerformaInvoiceEntity, Product } from '../../entity';
 
 export const DBConfig = {
     "POSTGRES_USER": "admin",
@@ -29,7 +30,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
                 port: DBConfig.PORT,
                 logging: true,
                 logger: 'file',
-                entities: ['**/*.entity{.ts,.js}'],
+                entities: [Product, PerformaInvoiceEntity],
                 ssl: {
                     rejectUnauthorized: false,
                 },

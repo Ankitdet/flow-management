@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../../../common-infra/crud-ops/entities/base.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { BaseEntity } from '../common-infra/crud-ops/entities/base.entity';
+import { Product } from '.';
 
 @Entity()
 export class PerformaInvoiceEntity extends BaseEntity {
@@ -64,4 +65,7 @@ export class PerformaInvoiceEntity extends BaseEntity {
     @Column('simple-array', { name: 'images' })
     images: string[];
 
+    @ManyToOne(_ => Product, p => p.invoice)
+    @JoinColumn()
+    product: Product
 }
