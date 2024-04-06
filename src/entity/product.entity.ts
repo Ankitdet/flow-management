@@ -15,7 +15,9 @@ export class Product extends BaseEntity {
     @Column()
     face: string;
 
-    @OneToOne(_ => PerformaInvoiceEntity, iv => iv.product)
+    @OneToOne(_ => PerformaInvoiceEntity, iv => iv.product, {
+        createForeignKeyConstraints: false
+    })
     invoice: PerformaInvoiceEntity
 
 }

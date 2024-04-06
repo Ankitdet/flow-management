@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { Product } from "../../entity";
 import { PerformaInvoiceEntity } from "../../entity/performa-invoice.entity";
 import { ProductRepository } from "../product/infrastructure/product.repository";
+import { ProductService } from "../product/service/product.service";
 import { PerformaInvoiceController } from "./api/controller/peforma-invoice.controller";
 import { PerformaInvoiceRepository } from "./infrastructure/performa-invoice.repositorty";
 import { PerformaInvoiceService } from "./service/performa-invoice.service";
-import { Product } from "../../entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([PerformaInvoiceEntity, Product])],
@@ -14,6 +15,10 @@ import { Product } from "../../entity";
         {
             provide: PerformaInvoiceService.name,
             useClass: PerformaInvoiceService
+        },
+        {
+            provide: ProductService.name,
+            useClass: ProductService
         },
         ProductRepository,
         PerformaInvoiceRepository

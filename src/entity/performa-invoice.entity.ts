@@ -65,7 +65,7 @@ export class PerformaInvoiceEntity extends BaseEntity {
     @Column('simple-array', { name: 'images' })
     images: string[];
 
-    @ManyToOne(_ => Product, p => p.invoice)
+    @ManyToOne(_ => Product, p => p.invoice, { createForeignKeyConstraints: false })
     @JoinColumn()
     product: Product
 }

@@ -6,6 +6,7 @@ import { TypeOrmConfigService } from './common-infra/config/database';
 import { AllModules } from './export-module';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './middleware/filters/global-exception-handler';
+import { AwsS3Service } from './common-infra/s3-services/s3-service.provider';
 
 @Global()
 @Module({
@@ -23,9 +24,17 @@ import { GlobalExceptionFilter } from './middleware/filters/global-exception-han
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
     },
+    {
+      provide: AwsS3Service.name,
+      useClass: AwsS3Service
+    },
   ],
   exports: [
-    BaseModule
+    BaseModule,
+    {
+      provide: AwsS3Service.name,
+      useClass: AwsS3Service
+    },
   ]
 })
 export class MainModule { }
