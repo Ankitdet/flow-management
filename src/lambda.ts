@@ -1,32 +1,15 @@
-import { Handler, Context } from 'aws-lambda';
-import { Server } from 'http';
 import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import * as serverless from 'aws-serverless-express';
-import { proxy } from 'aws-serverless-express';
+import { configure as serverlessExpress } from '@vendia/serverless-express';
 import { MainModule } from './main.module';
+import { Context } from 'aws-lambda';
 
-let cachedServer: Server;
+let cachedServer: any;
 
-process.on('unhandledRejection', (reason) => {
-    // tslint:disable-next-line:no-console
-    console.error(reason);
-});
-
-process.on('uncaughtException', (reason) => {
-    // tslint:disable-next-line:no-console
-    console.error(reason);
-});
-
-function bootstrapServer(): Promise<Server> {
-    const expressApp = require('express')();
-    const adapter = new ExpressAdapter(expressApp);
-    return NestFactory.create(MainModule, adapter, { logger: false })
-        .then(app => app.init())
-        .then(() => serverless.createServer(expressApp));
+export const handler = async (event: Event, context: Context, _callback: any) => {
+    if (!cachedServer) {
+        const nestApp = await NestFactory.create(MainModule);
+        await nestApp.init();
+        cachedServer = serverlessExpress({ app: nestApp.getHttpAdapter().getInstance() });
+    }
+    return cachedServer(event, context);
 }
-
-export const handler: Handler = async (event: any, context: Context) => {
-    cachedServer = await bootstrapServer();
-    return proxy(cachedServer, event, context, 'PROMISE').promise;
-};
