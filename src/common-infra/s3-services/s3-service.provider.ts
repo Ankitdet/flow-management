@@ -40,17 +40,17 @@ export class AwsS3Service {
         }
     }
 
-    public async batchPutPresignedUrls(bucketName: string, keys: string[]) {
+    public async batchPutPresignedUrls(bucketName: string, keys: string[]): Promise<Result<any>> {
         try {
             const promises = keys.map(async key => {
                 const command = new PutObjectCommand({ Bucket: bucketName, Key: key });
                 const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
                 return { key, url };
             });
-            return Promise.all(promises);
+            const response = await Promise.all(promises);
+            return Result.success(response)
         } catch (error) {
-            console.error('Error:', error);
-            throw error;
+            return Result.failed(new CommonError('Error: Failed to Get Upload Urls', { bucketName, keys }))
         }
     }
     public async getAllPresignedUrls(folderName: string, bucketName: string): Promise<Result<any>> {

@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Inject, Injectable, Param, Patch, Post, Query } from "@nestjs/common";
+import { ListQuery } from "../../../../common-infra/crud-ops/list-query";
 import { ProductService } from "../../service/product.service";
 import { CreateProductRequest } from "../request-model/create-product.request";
-import { UpdateProductRequest } from "../request-model/update-product.request";
 import { DeleteProductRequest } from "../request-model/delete-product.request";
-import { ListQuery } from "../../../../common-infra/crud-ops/list-query";
 import { ListProductRequest } from "../request-model/list-product.request";
+import { UpdateProductRequest } from "../request-model/update-product.request";
 
 @Injectable()
 @Controller('product')
@@ -28,10 +28,9 @@ export class ProductInfoController {
         @Query('limit') limit: number,
         @Query('sortColumn') column: string,
         @Query('sortDirection') direction: 'ASC' | 'DESC',
-        @Query('finishing') finishing: string,
-        @Query('productionNo') productionNo: string,
+        @Query('finishing') finishing: string[],
     ) {
-        const listObj = new ListQuery<ListProductRequest>({ finishing, productionNo }, offset, limit, column, direction)
+        const listObj = new ListQuery<ListProductRequest>({ finishing }, offset, limit, column, direction)
         return await this.productService.listProduct(listObj)
     }
 

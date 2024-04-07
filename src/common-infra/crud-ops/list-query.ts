@@ -1,10 +1,10 @@
 export class ListQuery<T> {
     constructor(
-        public query: T,
-        public offset: number,
-        public limit: number,
-        public sortColumn: string,
-        public sortDirection: "ASC" | "DESC"
+        public query?: T,
+        public offset?: number,
+        public limit?: number,
+        public sortColumn?: string,
+        public sortDirection?: "ASC" | "DESC"
     ) {
         if (isNaN(this.limit)) this.limit = 10
         if (isNaN(this.offset)) {

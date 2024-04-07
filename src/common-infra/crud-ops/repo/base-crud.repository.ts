@@ -5,7 +5,7 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 import { CommonError } from '../../../core-common/common-error';
 import { Result } from '../../../core-common/result-model';
 
-export class BaseRepository<T extends BaseEntity> implements IRepository<T>{
+export class BaseRepository<T extends BaseEntity> implements IRepository<T> {
     constructor(public readonly repository: Repository<T>) { }
 
     public async findAll(options?: FindManyOptions<T>): Promise<Result<{ result: T[], count: number }>> {
@@ -13,7 +13,7 @@ export class BaseRepository<T extends BaseEntity> implements IRepository<T>{
             const [result, count] = await this.repository.findAndCount(options);
             return Result.success({ result, count })
         } catch (error) {
-            return Result.throwIfFailed(Result.failed(new CommonError('Failed to FindAll', { options })))
+            return Result.throwIfFailed(Result.failed(new CommonError('Failed to FindAll', { error })))
         }
     }
 
