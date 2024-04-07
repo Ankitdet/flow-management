@@ -1,5 +1,4 @@
-import { Column, Entity, OneToOne } from "typeorm";
-import { PerformaInvoiceEntity } from ".";
+import { Column, Entity } from "typeorm";
 import { BaseEntity } from "../common-infra/crud-ops/entities/base.entity";
 
 @Entity('product')
@@ -21,9 +20,9 @@ export class Product extends BaseEntity {
     @Column()
     folderId: string
 
-    @OneToOne(_ => PerformaInvoiceEntity, iv => iv.product, {
-        createForeignKeyConstraints: false
-    })
-    invoice: PerformaInvoiceEntity
+    /*   @OneToOne(_ => PerformaInvoiceEntity, iv => iv.product, {
+          createForeignKeyConstraints: false
+      })
+      invoice: PerformaInvoiceEntity */
 
 }

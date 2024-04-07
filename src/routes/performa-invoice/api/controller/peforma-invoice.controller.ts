@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, Post } from "@nestjs/common";
 import { CreatePIRequst } from "../request-model/create-pi.request";
 import { PerformaInvoiceService } from "../../service/performa-invoice.service";
 
@@ -7,14 +7,18 @@ import { PerformaInvoiceService } from "../../service/performa-invoice.service";
 export class PerformaInvoiceController {
     constructor(
         @Inject(PerformaInvoiceService.name)
-        private readonly piRequest: PerformaInvoiceService
+        private readonly piService: PerformaInvoiceService
     ) {
     }
 
     @Post()
     public async createProduct(@Body() create: CreatePIRequst) {
         const obj = new CreatePIRequst(create)
-        return await this.piRequest.createPerformaInvoice(obj)
+        return await this.piService.createPerformaInvoice(obj)
     }
 
+    @Get(':id')
+    public async getPerformaInvoiceById(@Param('id') id: string) {
+        return await this.piService.getProductById(id)
+    }
 }

@@ -1,7 +1,25 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntity } from '../common-infra/crud-ops/entities/base.entity';
+import { Column, Entity } from 'typeorm';
 import { Product } from '.';
+import { BaseEntity } from '../common-infra/crud-ops/entities/base.entity';
+import { DeepPartial } from '../core-common/deep-partial';
 
+
+export class PerformaInvoicMetadata {
+    productId: string
+    productionNo: string;
+    sampleNo: string;
+    noOfFaces: string
+    finishing: string
+    sizeInCm: string;
+    noOfContainer: number;
+    pallets: number[];
+    boxPerPallets: number[];
+    totalBox: number;
+    sqmtrBox: string;
+    totalSqmtrBox: string;
+    fobRate: number;
+    totalFobAmount: number;
+}
 @Entity('performa_invoice')
 export class PerformaInvoiceEntity extends BaseEntity {
 
@@ -9,7 +27,7 @@ export class PerformaInvoiceEntity extends BaseEntity {
     consignee: string;
 
     @Column({ type: 'date' })
-    date: Date;
+    date: DeepPartial<Date>;
 
     @Column()
     piNo: string;
@@ -29,43 +47,44 @@ export class PerformaInvoiceEntity extends BaseEntity {
     @Column()
     portOfDischarge: string;
 
-    @Column({ type: 'integer' })
-    noOfContainer: number;
-
     @Column()
     paymentTerms: string;
 
     @Column()
     loadingPaymentCondition: string;
 
-    @Column()
-    sizeInCm: string;
+    /*     @ManyToOne(_ => Product, p => p.invoice, { createForeignKeyConstraints: false })
+        @JoinColumn()
+        product: DeepPartial<Product> */
 
-    @Column('simple-array', { name: 'pallets' })
-    pallets: number[];
+    @Column({ type: 'json', nullable: true })
+    metadata: DeepPartial<PerformaInvoicMetadata[]>
 
-    @Column('simple-array', { name: 'boxPerPallets' })
-    boxPerPallets: number[];
-
-    @Column({ type: 'integer' })
-    totalBox: number;
-
-    @Column({ name: 'sqmtrBox' })
-    sqmtrBox: string;
-
-    @Column({ name: 'totalSqmtrBox' })
-    totalSqmtrBox: string;
-
-    @Column({ type: 'float' })
-    fobRate: number;
-
-    @Column({ type: 'float' })
-    totalFobAmount: number;
-
-    @Column('simple-array', { name: 'images' })
-    images: string[];
-
-    @ManyToOne(_ => Product, p => p.invoice, { createForeignKeyConstraints: false })
-    @JoinColumn()
-    product: Product
+    constructor(data: DeepPartial<{
+        consignee: string,
+        date: Date,
+        piNo: string,
+        iecCode: string,
+        countryOfOrigin: string,
+        portOfLoading: string,
+        countryOfDestination: string,
+        portOfDischarge: string,
+        paymentTerms: string,
+        loadingPaymentCondition: string,
+        product: Product,
+        metadata: PerformaInvoicMetadata[]
+    }>) {
+        super();
+        this.consignee = data?.consignee;
+        this.date = data?.date;
+        this.piNo = data?.piNo;
+        this.iecCode = data?.iecCode;
+        this.countryOfOrigin = data?.countryOfOrigin;
+        this.portOfLoading = data?.portOfLoading;
+        this.countryOfDestination = data?.countryOfDestination;
+        this.portOfDischarge = data?.portOfDischarge;
+        this.paymentTerms = data?.paymentTerms;
+        this.loadingPaymentCondition = data?.loadingPaymentCondition;
+        this.metadata = data?.metadata;
+    }
 }
