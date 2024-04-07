@@ -8,12 +8,18 @@ export class Product extends BaseEntity {
     productionNo: string;
     @Column()
     sampleNo: string;
+    @Column({ type: 'simple-array' })
+    finishing: string[];
+    @Column({ type: 'simple-array' })
+    surface: string[];
+    @Column({ type: 'simple-array' })
+    face: string[];
+
+    @Column({ type: 'simple-array' })
+    size: string[];
+
     @Column()
-    finishing: string;
-    @Column()
-    surface: string;
-    @Column()
-    face: string;
+    folderId: string
 
     @OneToOne(_ => PerformaInvoiceEntity, iv => iv.product, {
         createForeignKeyConstraints: false

@@ -7,25 +7,31 @@ export class CommonProductRequest {
     id: string;
     productionNo: string;
     sampleNo: string;
-    finishing: string;
-    surface: string;
-    face: string;
+    finishing: string[];
+    surface: string[];
+    face: string[];
+    size: string[];
+    folderId: string
 
     constructor(data: DeepPartial<{
         id: string;
         productionNo: string;
         sampleNo: string;
-        finishing: string;
-        surface: string;
-        face: string;
+        finishing: string[];
+        surface: string[];
+        face: string[];
+        size: string[];
+        folderId: string
     }>, operation: string) {
 
         // mapp fields here.
         this.productionNo = data.productionNo || '';
         this.sampleNo = data.sampleNo || '';
-        this.finishing = data.finishing || '';
-        this.surface = data.surface || '';
-        this.face = data.face || '';
+        this.finishing = data.finishing || [];
+        this.surface = data.surface || [];
+        this.face = data.face || [];
+        this.size = data.size || []
+        this.folderId = data.folderId || ''
         this.id = data.id
 
         let result = []

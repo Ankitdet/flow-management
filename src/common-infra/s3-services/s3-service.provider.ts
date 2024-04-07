@@ -1,7 +1,9 @@
 import { GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CREDENTIALS, REGION } from './s3-constant';
+import { Result } from '../../core-common/result-model';
+import { CommonError } from '../../core-common/common-error';
 
 @Injectable()
 export class AwsS3Service {
@@ -51,7 +53,7 @@ export class AwsS3Service {
             throw error;
         }
     }
-    public async getAllPresignedUrls(folderName: string, bucketName: string) {
+    public async getAllPresignedUrls(folderName: string, bucketName: string): Promise<Result<any>> {
         try {
             const listObjectsParams = {
                 Bucket: bucketName,
@@ -61,6 +63,10 @@ export class AwsS3Service {
             const listCommand = new ListObjectsV2Command(listObjectsParams);
             const data = await this.s3Client.send(listCommand);
             const files = data.Contents;
+
+            if (!files) {
+                return Result.failed(new CommonError('Images not found !!', listObjectsParams, HttpStatus.NOT_FOUND))
+            }
 
             const promises = files.map(async (file) => {
                 const getObjectParams = {
@@ -74,7 +80,7 @@ export class AwsS3Service {
             });
 
             const presignedUrls = await Promise.all(promises);
-            return presignedUrls;
+            return Result.success(presignedUrls);
         } catch (error) {
             console.error('Error:', error);
             throw error;

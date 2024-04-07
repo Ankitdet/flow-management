@@ -76,6 +76,7 @@
     "ts-jest": "28.0.1",
     "ts-loader": "9.5.1",
     "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.2.0",
     "webpack": "5.91.0",
     "webpack-cli": "5.1.4",
     "webpack-node-externals": "3.0.0"
@@ -93,5 +94,8 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": ">16"
   }
 }

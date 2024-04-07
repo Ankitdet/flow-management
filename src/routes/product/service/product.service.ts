@@ -9,6 +9,8 @@ import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provi
 import { Like } from 'typeorm';
 import { IMAGE_FOLDER } from "../../../common-infra/s3-services/s3-constant";
 import { PerformaInvoiceRepository } from "../../performa-invoice/infrastructure/performa-invoice.repositorty";
+import { v4 as uuidv4 } from 'uuid'
+
 @Injectable()
 export class ProductService {
     constructor(
@@ -63,13 +65,18 @@ export class ProductService {
     }
 
     public async getUploadPreSignUrl(keys: string[]) {
-        const newkeys = keys.map((m) => 'images/' + m)
-        return await this.s3Service.batchPutPresignedUrls(IMAGE_FOLDER, newkeys)
+        const uuid = uuidv4()
+        const newkeys = keys.map((m) => `images/${uuid}/` + m)
+        const presignedUrls = await this.s3Service.batchPutPresignedUrls(IMAGE_FOLDER, newkeys)
+        return {
+            folderId: uuid,
+            presignedUrls
+        }
     }
 
-    public async downloadImagePreSignUrls(folderName: string) {
-        const allUrls = await this.s3Service.getAllPresignedUrls(folderName, IMAGE_FOLDER)
-        return Result.success(allUrls)
+    public async downloadImagePreSignUrls(productId: string) {
+        const folderName = (await this.prodRepo.findById({ where: { id: productId } }))?.data?.folderId
+        return await this.s3Service.getAllPresignedUrls(`images/${folderName}`, IMAGE_FOLDER)
     }
 
 }
