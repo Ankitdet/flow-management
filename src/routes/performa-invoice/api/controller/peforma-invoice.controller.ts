@@ -11,6 +11,11 @@ export class PerformaInvoiceController {
     ) {
     }
 
+    @Get('create-excel')
+    public async getExcel() {
+        return await this.piService.createExcel()
+    }
+
     @Post()
     public async createProduct(@Body() create: CreatePIRequst) {
         const obj = new CreatePIRequst(create)
