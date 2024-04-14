@@ -37,7 +37,7 @@ export class PerformaInvoiceService {
         const worksheet = workbook.addWorksheet('PERFORMA INVOICE');
 
 
-        worksheet.getColumn('A').width = 5;
+        worksheet.getColumn('A').width = 8;
         worksheet.getColumn('B').width = 20;
         worksheet.getColumn('C').width = 20;
         worksheet.getColumn('D').width = 5;
@@ -385,13 +385,13 @@ export class PerformaInvoiceService {
         headerValues.forEach((value, index) => {
             const cell = worksheet.getCell(`${String.fromCharCode(65 + index)}16`);
             cell.value = value;
-            cell.font = { bold: true, size: 16 };
+            cell.font = { bold: false, size: 14 };
             cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
             cell.border = {
-                top: { style: 'thick' },
-                left: { style: 'thick' },
-                bottom: { style: 'thick' },
-                right: { style: 'thick' }
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' }
             }
         });
 
