@@ -12,8 +12,12 @@ export class PerformaInvoicMetadata {
     finishing: string
     sizeInCm: string;
     noOfContainer: number;
-    pallets: number[];
-    boxPerPallets: number[];
+    noOfPallets: [
+        {
+            pallets: number,
+            boxPerPallets: number
+        }
+    ]
     totalBox: number;
     sqmtrBox: string;
     totalSqmtrBox: string;
@@ -57,7 +61,7 @@ export class PerformaInvoiceEntity extends BaseEntity {
         @JoinColumn()
         product: DeepPartial<Product> */
 
-    @Column({ type: 'json', nullable: true })
+    @Column({ type: 'simple-json', nullable: false })
     metadata: DeepPartial<PerformaInvoicMetadata[]>
 
     constructor(data: DeepPartial<{

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, Post, Query } from "@nestjs/common";
 import { CreatePIRequst } from "../request-model/create-pi.request";
 import { PerformaInvoiceService } from "../../service/performa-invoice.service";
 
@@ -12,8 +12,8 @@ export class PerformaInvoiceController {
     }
 
     @Get('create-excel')
-    public async getExcel() {
-        return await this.piService.createExcel()
+    public async getExcel(@Query('piId') piId: string) {
+        return await this.piService.createExcel(piId)
     }
 
     @Post()

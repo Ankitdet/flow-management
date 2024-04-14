@@ -3,9 +3,9 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConnectionManager, getConnectionManager } from 'typeorm';
 
 export const DBConfig = {
-    "POSTGRES_USER": "admin",
-    "POSTGRES_HOST": "mydbinstance.ch4ouy6qusj4.us-east-1.rds.amazonaws.com",
-    "POSTGRES_PASSWORD": "root12345",
+    "POSTGRES_USER": "u185871994_my_db",
+    "POSTGRES_HOST": "193.203.184.52",
+    "POSTGRES_PASSWORD": "Ankit#2car",
     "PORT": 3306
 }
 
@@ -25,7 +25,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
                 username: DBConfig.POSTGRES_USER,
                 password: DBConfig.POSTGRES_PASSWORD,
                 autoLoadEntities: true,
-                database: 'velloza',
+                database: 'u185871994_my_db',
                 port: DBConfig.PORT,
                 entities: ['**/*.entity{.ts|.js}'],
                 ssl: {
