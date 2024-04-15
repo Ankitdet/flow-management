@@ -36,17 +36,16 @@ export class PerformaInvoiceService {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('PERFORMA INVOICE');
 
-
         worksheet.getColumn('A').width = 8;
         worksheet.getColumn('B').width = 20;
         worksheet.getColumn('C').width = 20;
-        worksheet.getColumn('D').width = 5;
+        worksheet.getColumn('D').width = 10;
         worksheet.getColumn('E').width = 20;
         worksheet.getColumn('F').width = 10;
         worksheet.getColumn('G').width = 20;
         worksheet.getColumn('H').width = 10;
-        worksheet.getColumn('I').width = 5;
-        worksheet.getColumn('J').width = 10;
+        worksheet.getColumn('I').width = 12;
+        worksheet.getColumn('J').width = 15;
         worksheet.getColumn('K').width = 15;
         worksheet.getColumn('L').width = 15;
         worksheet.getColumn('M').width = 15;
@@ -57,26 +56,40 @@ export class PerformaInvoiceService {
         const mergedCell = worksheet.getCell('A1');
         mergedCell.value = 'PERFORMA INVOICE';
         mergedCell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-        mergedCell.font = { bold: true, size: 48 };
+        mergedCell.font = { bold: true, size: 46 };
         mergedCell.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
 
+        worksheet.mergeCells('J1:O4');
+        const mergedCellImage = worksheet.getCell('J1');
+        mergedCellImage.value = '';
+        mergedCellImage.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        const base64 = await this.s3Service.s3UrlToBase64('s3://general-purpose-tiles/velloza_company_icon.png')
+        const imageId = workbook.addImage({
+            base64,
+            extension: 'png',
+        });
+        worksheet.addImage(imageId, {
+            tl: { col: 9, row: 0 },
+            ext: { width: 454, height: 120 },
+            editAs: 'absolute'
+        })
 
         worksheet.mergeCells('A2:E2');
         const mergedCellA2E2 = worksheet.getCell('A2');
         mergedCellA2E2.value = 'Consigner:-';
         mergedCellA2E2.alignment = { vertical: 'top', horizontal: 'left', wrapText: true };
-        mergedCellA2E2.font = { bold: true, size: 28 };
+        mergedCellA2E2.font = { bold: true, size: 26 };
 
         worksheet.mergeCells('A9:E9');
         const mergedCellA9E9 = worksheet.getCell('A9');
         mergedCellA9E9.value = 'Consignee:-';
         mergedCellA9E9.alignment = { vertical: 'top', horizontal: 'left', wrapText: true };
-        mergedCellA9E9.font = { bold: true, size: 28 };
+        mergedCellA9E9.font = { bold: true, size: 26 };
 
 
         worksheet.mergeCells('A10:E15');
@@ -107,7 +120,13 @@ export class PerformaInvoiceService {
 
         worksheet.mergeCells('F2:I2');
         const mergedCellF2I2 = worksheet.getCell('F2');
-        mergedCellF2I2.value = 'PI NO. :- AKK-321';
+        mergedCellF2I2.value = {
+            richText: [
+                { text: 'PI NO.', font: { bold: false, size: 16 } },
+                { text: 'AKK-321', font: { bold: true, size: 16 } },
+            ]
+        };
+
         mergedCellF2I2.alignment = { vertical: 'top', horizontal: 'left', wrapText: true };
         mergedCellF2I2.border = {
             top: { style: 'thin' },
@@ -115,12 +134,17 @@ export class PerformaInvoiceService {
             bottom: { style: 'thin' },
             right: { style: 'thin' }
         };
-        mergedCellF2I2.font = { bold: true, size: 20 };
 
 
         worksheet.mergeCells('F3:I3');
         const mergedCellF3I3 = worksheet.getCell('F3');
-        mergedCellF3I3.value = 'DATE :-' + dayjs(new Date()).format('DD.MM.YYYY')
+        mergedCellF3I3.value = {
+            richText: [
+                { text: 'DATE :-', font: { bold: false, size: 16 } },
+                { text: dayjs(new Date()).format('DD.MM.YYYY'), font: { bold: true, size: 16 } },
+            ]
+        };
+
         mergedCellF3I3.alignment = { vertical: 'top', horizontal: 'left', wrapText: true };
         mergedCellF3I3.border = {
             top: { style: 'thin' },
@@ -128,12 +152,17 @@ export class PerformaInvoiceService {
             bottom: { style: 'thin' },
             right: { style: 'thin' }
         };
-        mergedCellF3I3.font = { bold: true, size: 20 };
 
 
         worksheet.mergeCells('F4:I4');
         const mergedCellF4I4 = worksheet.getCell('F4');
         mergedCellF4I4.value = 'IEC CODE :- AATFV0318H';
+        mergedCellF4I4.value = {
+            richText: [
+                { text: 'IEC CODE :-', font: { bold: false, size: 16 } },
+                { text: `AATFV0318H`, font: { bold: true, size: 16 } },
+            ]
+        };
         mergedCellF4I4.alignment = { vertical: 'top', horizontal: 'left', wrapText: true };
         mergedCellF4I4.border = {
             top: { style: 'thin' },
@@ -141,7 +170,6 @@ export class PerformaInvoiceService {
             bottom: { style: 'thin' },
             right: { style: 'thin' }
         };
-        mergedCellF4I4.font = { bold: true, size: 20 };
 
 
         worksheet.mergeCells('F5:I5');
@@ -232,12 +260,12 @@ export class PerformaInvoiceService {
             bottom: { style: 'thin' },
             right: { style: 'thin' }
         };
-        mergedCellF11O11.font = { bold: true, size: 20 };
+        mergedCellF11O11.font = { bold: true, size: 22 };
 
 
         worksheet.mergeCells('F12:O12');
         const mergedCellF12O12 = worksheet.getCell('F12');
-        mergedCellF12O12.value = '';
+        mergedCellF12O12.value = '30% Advanced and Balance Against original Documents';
         mergedCellF12O12.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
         mergedCellF12O12.border = {
             top: { style: 'thin' },
@@ -245,7 +273,8 @@ export class PerformaInvoiceService {
             bottom: { style: 'thin' },
             right: { style: 'thin' }
         };
-        mergedCellF12O12.font = { bold: true, size: 20 };
+        mergedCellF12O12.font = { bold: false, size: 18 };
+
 
 
         worksheet.mergeCells('F13:O13');
@@ -301,7 +330,7 @@ export class PerformaInvoiceService {
 
         worksheet.mergeCells('J6:O6');
         const mergedCellJ6O6 = worksheet.getCell('J6');
-        mergedCellJ6O6.value = '';
+        mergedCellJ6O6.value = 'China';
         mergedCellJ6O6.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
         mergedCellJ6O6.border = {
             top: { style: 'thin' },
@@ -327,7 +356,7 @@ export class PerformaInvoiceService {
 
         worksheet.mergeCells('J8:O8');
         const mergedCellJ8O8 = worksheet.getCell('J8');
-        mergedCellJ8O8.value = '';
+        mergedCellJ8O8.value = 'Shenzhen';
         mergedCellJ8O8.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
         mergedCellJ8O8.border = {
             top: { style: 'thin' },
@@ -354,10 +383,10 @@ export class PerformaInvoiceService {
 
         worksheet.mergeCells('J10:O10');
         const mergedCellJ10O10 = worksheet.getCell('J10');
-        mergedCellJ10O10.value = '';
+        mergedCellJ10O10.value = '5';
         mergedCellJ10O10.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
         mergedCellJ10O10.border = {
-            top: { style: 'thick' },
+            top: { style: 'thin' },
             left: { style: 'thin' },
             bottom: { style: 'thin' },
             right: { style: 'thin' }
@@ -402,6 +431,10 @@ export class PerformaInvoiceService {
 
         let row = 17
         let slNo = 1
+        let totalNoOfContainer = 0
+        let totalPallates = 0
+        let totalBox = 0
+        let totalSqMtr = 0
         perfoma.metadata?.forEach(entry => {
             // Check if noOfPallets length is 2
             const noOfPalletsLength = entry.noOfPallets?.length;
@@ -412,10 +445,10 @@ export class PerformaInvoiceService {
                 worksheet.mergeCells(`${col}${row}:${col}${mergeCell}`)
                 const nnnCell = worksheet.getCell(`${col}${row}`)
                 nnnCell.border = {
-                    top: { style: 'thick' },
-                    left: { style: 'thick' },
-                    bottom: { style: 'thick' },
-                    right: { style: 'thick' }
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
 
                 }
                 if (col === 'A') {
@@ -456,6 +489,7 @@ export class PerformaInvoiceService {
                     bottom: { style: 'thin' },
                     right: { style: 'thin' }
                 }
+                worksheet.getCell(`I${row + a}`).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
                 worksheet.getCell(`J${row + a}`).value = entry.noOfPallets[a].boxPerPallets;
                 worksheet.getCell(`J${row + a}`).border = {
@@ -464,7 +498,14 @@ export class PerformaInvoiceService {
                     bottom: { style: 'thin' },
                     right: { style: 'thin' }
                 }
+                worksheet.getCell(`J${row + a}`).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                totalPallates += entry.noOfPallets[a].pallets;
             }
+
+            totalNoOfContainer += entry.noOfContainer
+            totalBox += entry.totalBox
+            totalSqMtr += Number(entry.totalSqmtrBox)
+
             row += (noOfPalletsLength);
         });
 
@@ -472,7 +513,7 @@ export class PerformaInvoiceService {
         let nextRow = row
 
         const cellH = worksheet.getCell(`H${row}`);
-        cellH.value = 'T1';
+        cellH.value = totalNoOfContainer;
         cellH.alignment = { vertical: 'middle', horizontal: 'center' };
         cellH.font = { bold: true, size: 20 };
         cellH.border = {
@@ -483,7 +524,7 @@ export class PerformaInvoiceService {
         }
 
         const cellI = worksheet.getCell(`I${nextRow}`);
-        cellI.value = 'T2';
+        cellI.value = totalPallates;
         cellI.alignment = { vertical: 'middle', horizontal: 'center' };
         cellI.font = { bold: true, size: 20 };
         cellI.border = {
@@ -494,7 +535,7 @@ export class PerformaInvoiceService {
         }
 
         const cellK = worksheet.getCell(`K${nextRow}`);
-        cellK.value = 'T3';
+        cellK.value = totalBox;
         cellK.alignment = { vertical: 'middle', horizontal: 'center' };
         cellK.font = { bold: true, size: 20 };
         cellK.border = {
@@ -505,7 +546,7 @@ export class PerformaInvoiceService {
         }
 
         const cellM = worksheet.getCell(`M${nextRow}`);
-        cellM.value = 'T4';
+        cellM.value = totalSqMtr
         cellM.alignment = { vertical: 'middle', horizontal: 'center' };
         cellM.font = { bold: true, size: 20 };
         cellM.border = {
@@ -520,10 +561,10 @@ export class PerformaInvoiceService {
         cello.alignment = { vertical: 'middle', horizontal: 'center' };
         cello.font = { bold: true, size: 20 };
         cello.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
 
 
@@ -534,10 +575,10 @@ export class PerformaInvoiceService {
         mergeCellAAA.alignment = { vertical: 'middle', horizontal: 'center' };
         mergeCellAAA.font = { bold: true, size: 20 };
         mergeCellAAA.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
 
         }
 
@@ -548,10 +589,10 @@ export class PerformaInvoiceService {
         mergeCellAAABBB.alignment = { vertical: 'middle', horizontal: 'center' };
         mergeCellAAABBB.font = { bold: true, size: 20 };
         mergeCellAAABBB.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
 
         }
 
@@ -561,10 +602,10 @@ export class PerformaInvoiceService {
         mergeCellAAAB.alignment = { vertical: 'middle', horizontal: 'center' };
         mergeCellAAAB.font = { bold: true, size: 20 };
         mergeCellAAAB.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
 
         }
 
@@ -575,10 +616,10 @@ export class PerformaInvoiceService {
         mergeCellA28.alignment = { vertical: 'middle', horizontal: 'center' };
         mergeCellA28.font = { bold: true, size: 20 };
         mergeCellA28.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
 
         worksheet.mergeCells(`J${nextRow}:O${nextRow}`);
@@ -587,12 +628,11 @@ export class PerformaInvoiceService {
         vellozGranitoLLP.alignment = { vertical: 'middle', horizontal: 'left' };
         vellozGranitoLLP.font = { bold: true, size: 20 };
         vellozGranitoLLP.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
-
 
         nextRow += 1
         worksheet.mergeCells(`A${nextRow}:I${nextRow}`);
@@ -600,6 +640,19 @@ export class PerformaInvoiceService {
         mergeCellBeneficiary.value = 'Beneficiary Bank Name: HDFC BANK LIMITED ';
         mergeCellBeneficiary.alignment = { vertical: 'middle', horizontal: 'left' };
         mergeCellBeneficiary.font = { bold: false, size: 16 };
+
+        worksheet.mergeCells(`J${nextRow}:O${nextRow + 4}`);
+        const vellozaImage = worksheet.getCell(`J${nextRow}`);
+        vellozaImage.value = '';
+        vellozaImage.alignment = { vertical: 'middle', horizontal: 'left' };
+        vellozaImage.font = { bold: true, size: 20 };
+        vellozaImage.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        }
+
 
         nextRow += 1
         worksheet.mergeCells(`A${nextRow}:I${nextRow}`);
@@ -636,10 +689,10 @@ export class PerformaInvoiceService {
         corrsponseDtl.alignment = { vertical: 'middle', horizontal: 'center' };
         corrsponseDtl.font = { bold: true, size: 16 };
         corrsponseDtl.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
 
         worksheet.mergeCells(`J${nextRow}:O${nextRow}`);
@@ -648,10 +701,10 @@ export class PerformaInvoiceService {
         authorizedSign.alignment = { vertical: 'middle', horizontal: 'left' };
         authorizedSign.font = { bold: true, size: 16 };
         authorizedSign.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
 
         nextRow += 1
@@ -668,17 +721,32 @@ export class PerformaInvoiceService {
         buyersign.alignment = { vertical: 'middle', horizontal: 'left' };
         buyersign.font = { bold: true, size: 16 }
         buyersign.border = {
-            top: { style: 'thick' },
-            left: { style: 'thick' },
-            bottom: { style: 'thick' },
-            right: { style: 'thick' }
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
+
+
         nextRow += 1
         worksheet.mergeCells(`A${nextRow}:I${nextRow}`);
         const coorsAccNo = worksheet.getCell(`A${nextRow}`);
         coorsAccNo.value = 'A/c No. - 001 - 1 - 406717 ';
         coorsAccNo.alignment = { vertical: 'middle', horizontal: 'left' };
         coorsAccNo.font = { bold: false, size: 16 }
+
+        worksheet.mergeCells(`J${nextRow}:O${nextRow + 4}`);
+        const buyerSignedImage = worksheet.getCell(`J${nextRow}`);
+        buyerSignedImage.value = '';
+        buyerSignedImage.alignment = { vertical: 'middle', horizontal: 'left' };
+        buyerSignedImage.font = { bold: true, size: 20 };
+        buyerSignedImage.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        }
+
 
         nextRow += 1
         worksheet.mergeCells(`A${nextRow}:I${nextRow}`);
@@ -722,18 +790,6 @@ export class PerformaInvoiceService {
         };
 
 
-
-        const base64 = await this.s3Service.s3UrlToBase64('s3://general-purpose-tiles/velloza_company_icon.png')
-        const imageId = workbook.addImage({
-            base64,
-            extension: 'jpeg',
-        });
-
-        worksheet.addImage(imageId, {
-            tl: { col: 9, row: 0 },
-            ext: { width: 120, height: 60 } // dimensions of the image});
-        })
-
         const buffer = await workbook.xlsx.writeBuffer();
 
         // Upload buffer to S3 bucket
@@ -745,8 +801,6 @@ export class PerformaInvoiceService {
         };
         await this.s3Service.uploadToS3(uploadParams)
  */
-
-
 
         const filePath = 'output.xlsx';
         // Write the buffer to a local file
