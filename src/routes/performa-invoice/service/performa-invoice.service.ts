@@ -1,13 +1,15 @@
 import { Inject, Injectable } from "@nestjs/common";
+import dayjs from 'dayjs';
 import * as ExcelJS from 'exceljs';
+import PDFDocument from 'pdfkit';
+import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provider";
 import { DeepPartial } from "../../../core-common/deep-partial";
 import { Result } from "../../../core-common/result-model";
 import { PerformaInvoiceEntity } from "../../../entity/performa-invoice.entity";
 import { CreatePIRequst } from "../api/request-model/create-pi.request";
 import { PerformaInvoiceRepository } from "../infrastructure/performa-invoice.repositorty";
 const fs = require('fs');
-import dayjs from 'dayjs';
-import { AwsS3Service } from "../../../common-infra/s3-services/s3-service.provider";
+
 @Injectable()
 export class PerformaInvoiceService {
     constructor(
@@ -814,5 +816,22 @@ export class PerformaInvoiceService {
 
         // Save the workbook
         return Result.success("done");
+    }
+
+    public async createPdfFromImages() {
+
+        const outputPDF = 'ImagesFromS3_Output.pdf';
+        const pdfStream = fs.createWriteStream(outputPDF);
+
+        // Configuration
+        const { base64Image } = await this.s3Service.s3UrlToBuffer('s3://general-purpose-tiles/images/083881d1-3eec-4f44-bfaa-c0de12c3fca3/DSC05115.JPG')
+
+        const pdfDoc = new PDFDocument({ size: [612, 792] });
+        pdfDoc.pipe(pdfStream);
+
+        pdfDoc.image(base64Image);
+
+        pdfDoc.addPage();
+        pdfDoc.end();
     }
 }

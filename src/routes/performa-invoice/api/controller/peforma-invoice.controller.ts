@@ -12,8 +12,9 @@ export class PerformaInvoiceController {
     }
 
     @Get('create-excel')
-    public async getExcel(@Query('piId') piId: string) {
-        return await this.piService.createExcel(piId)
+    public async getExcel(@Query('piId') _piId: string) {
+        // return await this.piService.createExcel(piId)
+        return await this.piService.createPdfFromImages()
     }
 
     @Post()

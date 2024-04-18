@@ -109,6 +109,25 @@ export class AwsS3Service {
         }
     }
 
+    public async s3UrlToBuffer(s3Url: string) {
+        try {
+            // Extract bucket name and key from S3 URL
+            const { bucket, key } = this.parseS3Url(s3Url);
+
+            // Download image from S3
+            const getObjectParams = {
+                Bucket: bucket,
+                Key: key
+            };
+            const { Body } = await this.s3Client.send(new GetObjectCommand(getObjectParams));
+            // Convert image to base64
+            const base64Image = Buffer.from(await this.stream2buffer(Body));
+            return { base64Image };
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    }
     private parseS3Url(s3Url: string) {
         const [, bucket, key] = s3Url.match(/^s3:\/\/([^\/]+)\/(.*)$/);
         return { bucket, key };
