@@ -15,6 +15,13 @@ export const createNestApp = async <
 
 async function bootstrap() {
   const app = await createNestApp();
+  app.enableCors({
+    origin: true,
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders:
+      'Content-Type,Accept,Authorization,Access-Control-Allow-Origin',
+  });
 
   await app.listen(3000);
 }
