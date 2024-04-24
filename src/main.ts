@@ -1,25 +1,29 @@
-import { INestApplication } from '@nestjs/common';
-import { AbstractHttpAdapter, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { MainModule } from './main.module';
+import express from 'express';
+import { useContainer } from 'class-validator';
 
-export const createNestApp = async <
-  T extends INestApplication = INestApplication,
->(
-  httpAdapter?: AbstractHttpAdapter,
-): Promise<T> => {
-  const app = await NestFactory.create<T>(MainModule, httpAdapter);
-  app.setGlobalPrefix(process.env.API_GLOBAL_PREFIX);
-
-  return app;
-};
+declare const module: any;
 
 async function bootstrap() {
-  const app = await createNestApp();
-  await app.listen(4000);
+  const app = await NestFactory.create<NestExpressApplication>(MainModule, {
+    bodyParser: true,
+    cors: true,
+  });
+  express.raw({
+    type: '*/*',
+  });
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
+  app.setGlobalPrefix('/api');
+  useContainer(app.select(MainModule), { fallbackOnErrors: true });
+  app.enableShutdownHooks();
+  await app.listen(3002);
   return app;
 }
-
-bootstrap();
 
 process.on('uncaughtException', (err) => {
   console.warn(err, 'LOGGER', false);
