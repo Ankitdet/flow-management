@@ -15,15 +15,21 @@ export const createNestApp = async <
 
 async function bootstrap() {
   const app = await createNestApp();
-  app.enableCors({
-    origin: true,
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders:
-      'Content-Type,Accept,Authorization,Access-Control-Allow-Origin',
-  });
-
-  await app.listen(3000);
+  await app.listen(4000);
+  return app;
 }
 
 bootstrap();
+
+process.on('uncaughtException', (err) => {
+  console.warn(err, 'LOGGER', false);
+});
+
+bootstrap()
+  .then(async (app) => {
+    console.log(`App is running on ${await app.getUrl()}`);
+  })
+  .catch((err) => {
+    console.error(`error while 3blocks.io running...`, err);
+    throw err;
+  });
